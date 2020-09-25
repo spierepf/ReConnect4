@@ -1,5 +1,5 @@
 {
-  "name": "ReConnect4",
+  "name": "reconnect4",
   "version": "1.0.0",
   "description": "A multiplayer, light-up board game in the style of Connect Four",
   "main": "index.js",

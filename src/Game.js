@@ -1,8 +1,10 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 
+
 export function clickCell(G, ctx, id) {
   G.cells[id] = ctx.currentPlayer;
 }
+
 
 export const ReConnectFour = {
   setup: () => ({ cells: Array(7).fill(Array(6).fill(null)) }),
