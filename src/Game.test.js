@@ -1,9 +1,10 @@
 import { clickCell } from './Game';
 
+
 it('should place the correct value in the cell', () => {
   // original state.
   const G = {
-    cells: [null, null, null, null, null, null, null, null, null],
+    cells: [null, null, null, null, null, null],
   };
 
   // make move.
