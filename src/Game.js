@@ -1,10 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 
-export const ReConnectFour = {
-  setup: () => ({ cells: Array(7).fill(Array(6).fill(null)) }),
 
-  moves: {
-    clickCell: (G, ctx, id) => {
+export function clickCell(G, ctx, id) {
+
 		var i = 0;
 		for(i=0;i<7;i++){
 			if(G.cells[id][i] === null) {
@@ -13,7 +11,15 @@ export const ReConnectFour = {
 			} 
 		}
 		return INVALID_MOVE;
-    },
+    
+}
+
+
+export const ReConnectFour = {
+  setup: () => ({ cells: Array(7).fill(Array(6).fill(null)) }),
+
+  moves: {
+    clickCell
   },
   
   turn: {
@@ -32,7 +38,7 @@ export const ReConnectFour = {
 
 
 
- function IsVictory(cells) {  //return true if game won
+ export function IsVictory(cells) {  //return true if game won
 
 	var emptyFound = 0;
 	var rows = 6; 
@@ -77,7 +83,7 @@ export const ReConnectFour = {
   }
 
 // Return true if all `cells` are occupied.
-function IsDraw(cells) {
+export function IsDraw(cells) {
 	var rows = 6; 
 	var cols = 7;
 	
@@ -86,6 +92,8 @@ function IsDraw(cells) {
 			if(cells[x][y] === null)
 				return false;
 			
+	if (IsVictory(cells))
+		return false;
 	return true;
 }
 
