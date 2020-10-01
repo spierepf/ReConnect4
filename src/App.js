@@ -1,9 +1,10 @@
 import { Client } from 'boardgame.io/client';
+import { Local } from 'boardgame.io/multiplayer'
 import { ReConnectFour } from './Game';
 
 class ReConnectFourClient {
-  constructor(rootElement) {
-    this.client = Client({ game: ReConnectFour });
+  constructor(rootElement,  { playerID } = {} ) {
+    this.client = Client({ game: ReConnectFour, multiplayer: Local(), playerID, });
     this.client.start();
     this.rootElement = rootElement;
     this.createBoard();
@@ -72,4 +73,13 @@ class ReConnectFourClient {
 //const app = new ReConnectFourClient();
 
 const appElement = document.getElementById('app');
-const app = new ReConnectFourClient(appElement);
+//const app = new ReConnectFourClient(appElement);
+
+const playerIDs = ['0', '1'];
+const clients = playerIDs.map(playerID => {
+  const rootElement = document.createElement('div');
+  appElement.append(rootElement);
+  return new ReConnectFourClient(rootElement, { playerID });
+});
+
+
