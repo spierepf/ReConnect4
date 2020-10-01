@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "start": "parcel index.html --open"
-  },
+    "start": "parcel index.html --open",
+    "serve": "node -r esm src/server.js"
+   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spierepf/ReConnect4.git"
@@ -19,7 +20,8 @@
   },
   "homepage": "https://github.com/spierepf/ReConnect4#readme",
   "dependencies": {
-    "boardgame.io": "^0.40.0"
+    "boardgame.io": "^0.40.0",
+    "esm": "^3.2.25"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",

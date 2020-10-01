@@ -1,10 +1,11 @@
 import { Client } from 'boardgame.io/client';
 import { Local } from 'boardgame.io/multiplayer'
 import { ReConnectFour } from './Game';
+import { SocketIO } from 'boardgame.io/multiplayer'
 
 class ReConnectFourClient {
   constructor(rootElement,  { playerID } = {} ) {
-    this.client = Client({ game: ReConnectFour, multiplayer: Local(), playerID, });
+    this.client = Client({ game: ReConnectFour, multiplayer: SocketIO({ server: 'localhost:8000' }), playerID, });
     this.client.start();
     this.rootElement = rootElement;
     this.createBoard();
@@ -47,6 +48,7 @@ class ReConnectFourClient {
   }
   
   update(state) {
+	 if (state === null) return;
     // Get all the board cells.
     const cells = this.rootElement.querySelectorAll('.cell');
     // Update cells to display the values in game state.
