@@ -1,6 +1,6 @@
-import { clickCell } from './Game';
-import { IsVictory } from './Game';
-import { IsDraw } from './Game';
+import { clickCell } from '../Game';
+import { IsVictory } from '../Game';
+import { IsDraw } from '../Game';
 import { INVALID_MOVE } from 'boardgame.io/core';
 
 it('should place the correct value the bottom of the clicked column', () => {

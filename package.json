@@ -7,7 +7,7 @@
     "test": "jest --coverage",
     "start": "parcel index.html --open",
     "serve": "node -r esm src/server.js"
-   },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spierepf/ReConnect4.git"
