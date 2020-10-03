@@ -1,9 +1,13 @@
 import { Client } from 'boardgame.io/client';
+import { Local } from 'boardgame.io/multiplayer'
 import { ReConnectFour } from './Game';
+import { SocketIO } from 'boardgame.io/multiplayer'
 
 class ReConnectFourClient {
-  constructor(rootElement) {
-    this.client = Client({ game: ReConnectFour });
+  constructor(rootElement,  { playerID } = {} ) {
+    this.client = Client({ game: ReConnectFour, multiplayer: SocketIO({ server: 'localhost:8000' }), playerID, });
+
+
     this.client.start();
     this.rootElement = rootElement;
     this.createBoard();
@@ -18,7 +22,7 @@ class ReConnectFourClient {
       const cells = [];
       for (let x = 0; x < 7; x++) {
         const id = 7 * x + y;
-        cells.push(`<td class="cell" data-id="${id}"></td>`);
+        cells.push(`<td class="cell"  data-id="${id}" ><img src="http://localhost:8000/pieceEmpty.png" class="piece"  data-id="${id}" /></td>`);
       }
       rows.push(`<tr>${cells.join('')}</tr>`);
     }
@@ -46,13 +50,15 @@ class ReConnectFourClient {
   }
   
   update(state) {
+	 if (state === null) return;
     // Get all the board cells.
     const cells = this.rootElement.querySelectorAll('.cell');
     // Update cells to display the values in game state.
     cells.forEach(cell => {
       const cellId = parseInt(cell.dataset.id);
       const cellValue = state.G.cells[Math.floor(cellId/7)][(cellId-Math.floor(cellId/7))%6];
-      cell.textContent = cellValue !== null ? cellValue : '';
+  //    cell.innerHTML = cellValue !== null ? '<img src="http://localhost:8000/piece'+cellValue+'.png" class="piece" />' : '<img src="http://localhost:8000/pieceEmpty.png" class="piece" />';
+		cell.querySelector("IMG").src = cellValue !== null ? 'http://localhost:8000/piece'+cellValue+'.png' : 'http://localhost:8000/pieceEmpty.png';
     });
     // Get the gameover message element.
     const messageEl = this.rootElement.querySelector('.winner');
@@ -72,4 +78,13 @@ class ReConnectFourClient {
 //const app = new ReConnectFourClient();
 
 const appElement = document.getElementById('app');
-const app = new ReConnectFourClient(appElement);
+//const app = new ReConnectFourClient(appElement);
+
+const playerIDs = ['0', '1'];
+const clients = playerIDs.map(playerID => {
+  const rootElement = document.createElement('div');
+  appElement.append(rootElement);
+  return new ReConnectFourClient(rootElement, { playerID });
+});
+
+
