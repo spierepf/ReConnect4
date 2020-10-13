@@ -2,29 +2,38 @@ var net = require("net");
 
 import { OpcStreamManager } from "../OpcStreamManager.js"
 
-it('should not open a socket until asked' , () => {
-    var objectUnderTest = new OpcStreamManager(7890, 'raspberrypi.local');
+function createCloseableMockServer() {
+    var server = net.createServer(function(socket) {
+        this.sockets.add(socket);
+        server.once('close', () => {
+            this.sockets.delete(socket);
+        });
+    });
+    server.sockets = new Set();
+
+    server.listen(7890);
+
+    const close = (callback) => {
+        for (const socket of server.sockets) {
+            socket.destroy();
+            server.sockets.delete(socket);
+        }
+        server.close(callback);
+    };
+
+    return close;
+}
+
+
+it('should not open a socket until asked', () => {
+    var objectUnderTest = new OpcStreamManager(7890, 'localhost');
 
     expect(objectUnderTest.socket).toBeNull();
 });
 
 
-it('should open a socket when asked' , () => {
-    const sockets = new Set();
-    var server = net.createServer(function(socket) {
-        sockets.add(socket);
-        server.once('close', () => {
-            sockets.delete(socket);
-        });
-    });
-    server.listen(7890);
-    const close = (callback) => {
-        for (const socket of sockets) {
-            socket.destroy();
-            sockets.delete(socket);
-        }
-        server.close(callback);
-    };
+it('should open a socket when asked', () => {
+    var closeServer = createCloseableMockServer();
 
     var objectUnderTest = new OpcStreamManager(7890, 'localhost');
 
@@ -34,26 +43,12 @@ it('should open a socket when asked' , () => {
 
     objectUnderTest.close();
 
-    close();
+    closeServer();
 });
 
 
-it('should close its socket when asked' , () => {
-    const sockets = new Set();
-    var server = net.createServer(function(socket) {
-        sockets.add(socket);
-        server.once('close', () => {
-            sockets.delete(socket);
-        });
-    });
-    server.listen(7890);
-    const close = (callback) => {
-        for (const socket of sockets) {
-            socket.destroy();
-            sockets.delete(socket);
-        }
-        server.close(callback);
-    };
+it('should close its socket when asked', () => {
+    var closeServer = createCloseableMockServer();
 
     var objectUnderTest = new OpcStreamManager(7890, 'localhost');
 
@@ -62,5 +57,5 @@ it('should close its socket when asked' , () => {
 
     expect(objectUnderTest.socket).toBeNull();
 
-    close();
+    closeServer();
 });
