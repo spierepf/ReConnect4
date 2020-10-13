@@ -25,14 +25,15 @@ function createCloseableMockServer() {
 }
 
 
-it('should not open a socket until asked', () => {
+it('should not open a socket or stream until asked', () => {
     var objectUnderTest = new OpcStreamManager(7890, 'localhost');
 
     expect(objectUnderTest.socket).toBeNull();
+    expect(objectUnderTest.stream).toBeNull();
 });
 
 
-it('should open a socket when asked', () => {
+it('should open a socket and stream when asked', () => {
     var closeServer = createCloseableMockServer();
 
     var objectUnderTest = new OpcStreamManager(7890, 'localhost');
@@ -40,6 +41,7 @@ it('should open a socket when asked', () => {
     objectUnderTest.open();
 
     expect(objectUnderTest.socket).not.toBeNull();
+    expect(objectUnderTest.stream).not.toBeNull();
 
     objectUnderTest.close();
 
@@ -47,7 +49,7 @@ it('should open a socket when asked', () => {
 });
 
 
-it('should close its socket when asked', () => {
+it('should close its socket and stream when asked', () => {
     var closeServer = createCloseableMockServer();
 
     var objectUnderTest = new OpcStreamManager(7890, 'localhost');
@@ -56,6 +58,7 @@ it('should close its socket when asked', () => {
     objectUnderTest.close();
 
     expect(objectUnderTest.socket).toBeNull();
+    expect(objectUnderTest.stream).toBeNull();
 
     closeServer();
 });
