@@ -10,6 +10,7 @@ class NeoPixelCell {
     setColour(r, g, b) {
         for (let strand of this.strands.values()) {
             for (var i = 0; i < strand.length; i++) {
+                console.log(strand, r, g, b)
                 strand.setPixel(i, r, g, b);
             }
         }
