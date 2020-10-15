@@ -1,5 +1,5 @@
 class NeoPixelGame {
-    constructor(npCells, colours = [[64,0,0], [0,0,64]]) {
+    constructor(npCells, colours = [[64,0,0], [64,64,0]]) {
         this.npCells = npCells
         this.colours = colours
     }
@@ -14,7 +14,6 @@ class NeoPixelGame {
                     this.npCells[x][y].setColour(0, 0, 0);
                 } else {
                     var c = this.colours[gCells[x][y]];
-                    console.log(x, y, gCells[x][y], c);
                     this.npCells[x][y].setColour(c[0], c[1], c[2]);
                 }
             }
